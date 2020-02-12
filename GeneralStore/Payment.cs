@@ -12,16 +12,15 @@ namespace GeneralStore
         Cash,
         PayPal
     }
-   public class Paymenth
+   public class Payment
     {
         public Customer CustomerP { get; set; }
         public PayMentOption PayMethod { get; set; }
         public float Amount { get; set; }
         public float Change { get; set; }
-
         public List<Product> ProductsPayingFor { get; set; }
 
-        public Paymenth(List<Product> products,PayMentOption payMentOption,float amount, Customer customer, float change)
+        public Payment(List<Product> products,PayMentOption payMentOption,float amount, Customer customer, float change)
         {
             CustomerP = customer;
             ProductsPayingFor = products;
@@ -29,13 +28,23 @@ namespace GeneralStore
             Amount = amount;
             Change = change;
         }
-        public Paymenth(Product product, PayMentOption payMentOption, float amount, Customer customer, float change)
+        public Payment(Product product, PayMentOption payMentOption, float amount, Customer customer, float change)
         {
             CustomerP = customer;
+            ProductsPayingFor = new List<Product>();
             ProductsPayingFor.Add(product);
             PayMethod = payMentOption;
             Amount = amount;
             Change = change;
+        }
+
+        public void DisplayPaymentInfo()
+        {
+            Console.WriteLine($"\n\nPayment info:" +
+                              $"\n\nHolder: {CustomerP.Name}" +
+                              $"\nPayment Method: {CustomerP.PayMethod}" +
+                              $"\nAmount Payed: {Amount}" +
+                              $"\nChange: {Change}");
         }
     }
 }

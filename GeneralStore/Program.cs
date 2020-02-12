@@ -12,19 +12,21 @@ namespace GeneralStore
         {
             StoreLogic Makro = new StoreLogic();
 
-            Supplier ProductMart = new Supplier();
+            Supplier ProductMart = new Supplier("ProductMart", "Pinetown");
 
-            Customer customervarun = new Customer("Varun", CustomerType.Bulk);
+            //Customer customervarun = new Customer("Varun", CustomerType.Bulk);
 
             Drink drinkitem = new Drink("Heineken", 10, 0.15F, DrinkType.Alcholic);
 
-            Food fooditem = new Food("BarOneCake", 8, 0.15F, FoodType.Persishable);
+            //Food fooditem = new Food("BarOneCake", 8, 0.15F, FoodType.Persishable);
 
             Makro.ProcessSupplyOrder(ProductMart, drinkitem, 5);
 
-            Makro.ProcessSale(customervarun, drinkitem, 2);
+            Makro.OpenStore();
 
-            Makro.ProcessSupplyOrder(ProductMart, fooditem, 2);
+            //Makro.ProcessSale(customervarun, drinkitem, 2);
+
+            //Makro.ProcessSupplyOrder(ProductMart, fooditem, 2);
 
             Console.ReadKey();
 

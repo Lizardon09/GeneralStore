@@ -17,6 +17,7 @@ namespace GeneralStore
         public string Name { get; set; }
         public float Markup { get; set; }
         public CustomerType TypeOfCustomer { get; set; }
+        public PayMentOption PayMethod { get; set; }
 
         public Customer()
         {

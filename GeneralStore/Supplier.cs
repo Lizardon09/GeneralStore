@@ -19,6 +19,17 @@ namespace GeneralStore
             };
         }
 
+        public Supplier(string name, string location)
+        {
+            SupplyableProducts = new List<SupplyProduct>() {  new SupplyProduct(new Drink("Heineken",10,0.15F,DrinkType.Alcholic), 200),
+                                                                new SupplyProduct(new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic), 150)
+            };
+
+            Name = name;
+            Location = location;
+
+        }
+
         public int CheckQuanityOf(Product product)
         {
             foreach(var item in SupplyableProducts)
