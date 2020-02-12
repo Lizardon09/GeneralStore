@@ -9,7 +9,7 @@ namespace GeneralStore
     public abstract class Product
     {
         public string ProductName { get; set; }
-        public float SalePrice { get; set; }
+        public float BasePrice { get; set; }
         public int Quantity { get; set; }
         public float TaxPercent { get; set; }
         public DateTime DatePurchased { get; set; }
@@ -29,10 +29,23 @@ namespace GeneralStore
             ProductName = name;
             Quantity = quantity;
             TaxPercent = tax;
-            SalePrice = price;
+            BasePrice = price;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
 
         public abstract bool CanSell();
+
+        public virtual void DisplayProduct()
+        {
+            Console.WriteLine($"\n\nProduct Name: {ProductName}" +
+                              $"\nQuantity: {Quantity}" +
+                              $"\nTaxPercent: {TaxPercent*100}%" +
+                              $"\nBasePrice: R{BasePrice}");
+        }
 
     }
 }

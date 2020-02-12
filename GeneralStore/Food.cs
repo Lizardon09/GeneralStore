@@ -37,5 +37,11 @@ namespace GeneralStore
             }
             return true;
         }
+
+        public override void DisplayProduct()
+        {
+            base.DisplayProduct();
+            Console.WriteLine($"Type of Food: {(FoodType)TypeOfFood}\n");
+        }
     }
 }

@@ -25,33 +25,72 @@ namespace GeneralStore
         {
             string input = "false";
             Console.WriteLine("\n------------------WELCOME!!!!------------------");
-            Console.WriteLine("\n\nPlease indicate action to be made:");
-            Console.WriteLine("\nPlace supply order: order");
-            Console.WriteLine("\nPlace sale: sale\n");
 
             do
             {
+                Console.WriteLine("\n\nPlease indicate action to be made:");
+                Console.WriteLine("\nPlace supply order: order");
+                Console.WriteLine("\nPlace sale: sale");
+                Console.WriteLine("\nView Payments: payments");
+                Console.WriteLine("\nView Stock: stock\n");
+
                 input = Console.ReadLine();
                 switch (input)
                 {
+                    case "payments":
+                        ViewPayments();
+                        goto case "question";
+
+                    case "stock":
+                        ViewStock();
+                        goto case "question";
+
                     case "order":
                         Console.WriteLine("\n\nSupposed to perform supply order here");
                         //
-                        break;
+                        goto case "question";
+
                     case "sale":
                         Customer customer = new Customer();
                         customer = EnterCustomerInfo(input, customer);
                         AddToCart(input, customer);
                         ConfirmSale(input, customer);
+
+                        goto case "question";
                         //
-                        break;
                     default:
                         //
                         Console.WriteLine("\n\nInvalid command, please try again");
                         input = "false";
                         break;
+
+                    case "question":
+
+                        do
+                        {
+                            Console.WriteLine("\n\nDo you want to continue store? (Y/N)");
+                            input = Console.ReadLine();
+                            if (input == "Y")
+                            {
+                                input = "false";
+                                break;
+                            }
+                            else if (input == "N")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\n\nInvalid input, please try again");
+                            }
+                        } while (true);
+                        break;
+
                 }
             } while (input == "false");
+
+            Console.WriteLine("\n------------------Stor is closed------------------");
+            Console.WriteLine("\n------------------COME AGAIN!!!!------------------");
 
         }
 
@@ -139,7 +178,7 @@ namespace GeneralStore
                 }
                 else if(input.All(Char.IsDigit) && Convert.ToInt32(input) < AvailableProduct.Count)
                 {
-                    cartitem = AvailableProduct[Convert.ToInt32(input)];
+                    cartitem = (Product) AvailableProduct[Convert.ToInt32(input)].Clone();
 
                     Console.WriteLine("\nPlease input quantity:");
                     Console.WriteLine();
@@ -171,7 +210,7 @@ namespace GeneralStore
         public void ConfirmSale(string input, Customer customer)
         {
             float amountdue = 0;
-            Console.WriteLine("\n\nCurrent Cart list:\n\n");
+            Console.WriteLine("\n\nCurrent Cart list:\n");
             foreach (var item in Cart)
             {
                 amountdue += CalculateSalePrice(customer, item, item.Quantity);
@@ -218,10 +257,10 @@ namespace GeneralStore
                     {
                         RemoveFromStock(item, quantity);
                         Console.WriteLine($"\nSold {quantity} {item.ProductName} for R{CalculateSalePrice(customer, item, quantity)} to {customer.Name}:" +
-                                          $"\nBase price: R{item.SalePrice}" +
-                                          $"\nTax amount ({item.TaxPercent*100}%): R{item.SalePrice*item.TaxPercent}" +
-                                          $"\nConsidering Tax: R{item.SalePrice + (item.SalePrice * item.TaxPercent)}" +
-                                          $"\nMarkup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.SalePrice + (item.SalePrice * item.TaxPercent))}");
+                                          $"\nBase price: R{item.BasePrice}" +
+                                          $"\nTax amount ({item.TaxPercent*100}%): R{item.BasePrice*item.TaxPercent}" +
+                                          $"\nConsidering Tax: R{item.BasePrice + (item.BasePrice * item.TaxPercent)}" +
+                                          $"\nMarkup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.BasePrice + (item.BasePrice * item.TaxPercent))}");
                         return;
                     }
 
@@ -264,14 +303,14 @@ namespace GeneralStore
                 if (item.ProductName == product.ProductName)
                 {
                     item.Quantity += quantity;
-                    item.SalePrice = costprice;
+                    item.BasePrice = costprice;
                     item.DatePurchased = DateTime.Now.Date;
                     return;
                 }
             }
 
             product.Quantity = quantity;
-            product.SalePrice = costprice;
+            product.BasePrice = costprice;
 
             AvailableProduct.Add(product);
         }
@@ -302,9 +341,27 @@ namespace GeneralStore
 
         private float CalculateSalePrice(Customer customer, Product product, int quantity)
         {
-            float finalprice = product.SalePrice + (product.SalePrice * product.TaxPercent);
+            float finalprice = product.BasePrice + (product.BasePrice * product.TaxPercent);
             finalprice += (finalprice * ((float)customer.TypeOfCustomer / 100));
             return finalprice * quantity;
+        }
+
+        public void ViewPayments()
+        {
+            Console.WriteLine("\n\nList of stored payments");
+            foreach (var payment in Payments)
+            {
+                payment.DisplayPaymentInfo();
+            }
+        }
+
+        public void ViewStock()
+        {
+            Console.WriteLine("\n\nList of products in stock");
+            foreach (var item in AvailableProduct)
+            {
+                item.DisplayProduct();
+            }
         }
     }
 }
