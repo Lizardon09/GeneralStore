@@ -24,6 +24,11 @@ namespace GeneralStore
             TypeOfFood = typeofdrink;
         }
 
+        public Food(string name, int quantity, float tax, FoodType typeofdrink, float price) : base(name, quantity, tax, price)
+        {
+            TypeOfFood = typeofdrink;
+        }
+
         public override bool CanSell()
         {
             if(TypeOfFood == FoodType.Persishable && (DateTime.Now - DatePurchased).TotalDays>7)

@@ -14,8 +14,8 @@ namespace GeneralStore
 
         public StoreLogic()
         {
-            AvailableProduct = new List<Product>() {  new Drink("Heineken",10,0.15F,DrinkType.Alcholic),
-                 new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic)
+            AvailableProduct = new List<Product>() {  new Drink("Heineken",10,0.15F,DrinkType.Alcholic, 200),
+                 new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic, 100)
             };
             Payments = new List<Payment>();
             Cart = new List<Product>();
@@ -27,7 +27,7 @@ namespace GeneralStore
             Console.WriteLine("\n------------------WELCOME!!!!------------------");
             Console.WriteLine("\n\nPlease indicate action to be made:");
             Console.WriteLine("\nPlace supply order: order");
-            Console.WriteLine("\nPlace sale: sale");
+            Console.WriteLine("\nPlace sale: sale\n");
 
             do
             {
@@ -35,6 +35,7 @@ namespace GeneralStore
                 switch (input)
                 {
                     case "order":
+                        Console.WriteLine("\n\nSupposed to perform supply order here");
                         //
                         break;
                     case "sale":
@@ -46,6 +47,7 @@ namespace GeneralStore
                         break;
                     default:
                         //
+                        Console.WriteLine("\n\nInvalid command, please try again");
                         input = "false";
                         break;
                 }
@@ -57,12 +59,16 @@ namespace GeneralStore
         {
             do
             {
-                Console.WriteLine("\n\nPlease enter customer name");
+                Console.WriteLine("\n\nPlease enter customer name\n");
                 input = Console.ReadLine();
                 if (input.All(Char.IsLetter)){
 
                     customer.Name = input;
                     break;
+                }
+                else
+                {
+                    Console.WriteLine("\n\nInvalid input, please enter customer name\n");
                 }
 
             } while (true);
@@ -74,11 +80,16 @@ namespace GeneralStore
                 {
                     Console.WriteLine("\n"+name);
                 }
+                Console.WriteLine();
                 input = Console.ReadLine();
 
                 if (Enum.IsDefined(typeof(CustomerType), input)){
                     customer.TypeOfCustomer = (CustomerType)Enum.Parse(typeof(CustomerType), input);
                     break;
+                }
+                else
+                {
+                    Console.WriteLine("\n\nInvalid customer type inputed, please try again.");
                 }
 
             } while (true);
@@ -90,12 +101,17 @@ namespace GeneralStore
                 {
                     Console.WriteLine("\n" + name);
                 }
+                Console.WriteLine();
                 input = Console.ReadLine();
 
                 if (Enum.IsDefined(typeof(PayMentOption), input))
                 {
                     customer.PayMethod = (PayMentOption)Enum.Parse(typeof(PayMentOption), input);
                     break;
+                }
+                else
+                {
+                    Console.WriteLine("\n\nInvalid payment method specified, please try again.");
                 }
 
             } while (true);
@@ -115,6 +131,7 @@ namespace GeneralStore
 
             do
             {
+                Console.WriteLine();
                 input = Console.ReadLine();
                 if (input == "-1")
                 {
@@ -125,6 +142,7 @@ namespace GeneralStore
                     cartitem = AvailableProduct[Convert.ToInt32(input)];
 
                     Console.WriteLine("\nPlease input quantity:");
+                    Console.WriteLine();
                     input = Console.ReadLine();
 
                     if (input.All(Char.IsDigit) && Convert.ToInt32(input) > 0 && Convert.ToInt32(input) <= cartitem.Quantity)
@@ -132,13 +150,22 @@ namespace GeneralStore
                         cartitem.Quantity = Convert.ToInt32(input);
                         Cart.Add(cartitem);
                         Console.WriteLine($"\n{cartitem.Quantity} {cartitem.ProductName} has been added to cart");
-                        Console.WriteLine("\n\nPlease indicate items to be purchased from following (enter -1 to end):\n");
+                        Console.WriteLine("\n\nPlease indicate item to be purchased (enter -1 to end):\n");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("\n\nInvalid quantity inputed or inputing more than is available, please try again.");
                     }
 
                 }
+                else
+                {
+                    Console.WriteLine("\n\nInvalid item code inputed, please try again");
+                }
 
             } while (true);
-
+            Console.WriteLine("\n\nCart has been created succesfully.");
         }
 
         public void ConfirmSale(string input, Customer customer)
@@ -158,6 +185,7 @@ namespace GeneralStore
             {
                 Console.WriteLine($"\nPlease enter amount to pay:\n");
 
+                Console.WriteLine();
                 input = Console.ReadLine();
 
                 if(input.All(Char.IsDigit) && Convert.ToInt64(input) >= amountdue)
@@ -169,6 +197,10 @@ namespace GeneralStore
                     Payments.Add(new Payment(Cart, customer.PayMethod, amountdue, customer, Convert.ToInt64(input) - amountdue));
                     Payments[Payments.Count - 1].DisplayPaymentInfo();
                     break;
+                }
+                else
+                {
+                    Console.WriteLine("\n\nInvalid amount inputed or amount payed is less than amount due, please try again.");
                 }
 
             } while (true);
@@ -274,25 +306,5 @@ namespace GeneralStore
             finalprice += (finalprice * ((float)customer.TypeOfCustomer / 100));
             return finalprice * quantity;
         }
-
-        public void ProcessPayments(Customer customer, List<Product> products, float amount, int quantity, PayMentOption payMentOption)
-        {
-            foreach(var item in products)
-            {
-
-            }
-        }
-
-        public void ProcessPayment(Customer customer,Product product, float amount,int quantity,PayMentOption payMentOption)
-        {
-
-            if (amount >= CalculateSalePrice(customer, product, quantity))
-            {
-                Payments.Add(new Payment(product, payMentOption, amount, customer, amount - CalculateSalePrice(customer, product, quantity)));
-                Console.WriteLine("Payment Proccessed");
-            }
-           
-        }
-
     }
 }

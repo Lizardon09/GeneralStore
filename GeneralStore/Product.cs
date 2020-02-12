@@ -24,6 +24,14 @@ namespace GeneralStore
             TaxPercent = tax;
         }
 
+        public Product(string name, int quantity, float tax, float price)
+        {
+            ProductName = name;
+            Quantity = quantity;
+            TaxPercent = tax;
+            SalePrice = price;
+        }
+
         public abstract bool CanSell();
 
     }

@@ -24,6 +24,11 @@ namespace GeneralStore
             TypeOfDrink = typeofdrink;
         }
 
+        public Drink(string name, int quantity, float tax, DrinkType typeofdrink, float price) : base(name, quantity, tax, price)
+        {
+            TypeOfDrink = typeofdrink;
+        }
+
         public override bool CanSell()
         {
             return true;

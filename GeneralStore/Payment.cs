@@ -43,8 +43,8 @@ namespace GeneralStore
             Console.WriteLine($"\n\nPayment info:" +
                               $"\n\nHolder: {CustomerP.Name}" +
                               $"\nPayment Method: {CustomerP.PayMethod}" +
-                              $"\nAmount Payed: {Amount}" +
-                              $"\nChange: {Change}");
+                              $"\nAmount Payed: R{Amount}" +
+                              $"\nChange: R{Change}");
         }
     }
 }
