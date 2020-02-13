@@ -11,14 +11,21 @@ namespace GeneralStore
         public List<Product> AvailableProduct { get; set; }
         private List<Payment> Payments { get; set; }
         private List<Product> Cart { get; set; }
+        private List<Supplier> Supplier { get; set; }
 
         public StoreLogic()
         {
             AvailableProduct = new List<Product>() {  new Drink("Heineken",10,DrinkType.Alcholic, 200),
                  new Drink("Heineken00",25,DrinkType.NonAlcoholic, 100)
             };
+
+            Supplier = new List<Supplier>() { new Supplier("ProductMart", "Pinetown"),
+                new Supplier("JumbleBust", "Umhlanga")
+            };
+        
             Payments = new List<Payment>();
             Cart = new List<Product>();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
         }
 
         public void OpenStore()
@@ -33,6 +40,7 @@ namespace GeneralStore
                 Console.WriteLine("\nPlace sale: sale");
                 Console.WriteLine("\nView Payments: payments");
                 Console.WriteLine("\nView Stock: stock\n");
+                Console.WriteLine("\n------------------------------------\n");
 
                 input = Console.ReadLine();
                 switch (input)
@@ -96,6 +104,7 @@ namespace GeneralStore
 
         public Customer EnterCustomerInfo(string input, Customer customer)
         {
+            Console.WriteLine("\n------------------Customer information------------------\n");
             do
             {
                 Console.WriteLine("\n\nPlease enter customer name\n");
@@ -155,11 +164,15 @@ namespace GeneralStore
 
             } while (true);
 
+            Console.WriteLine("\nCustomer Information Recorded!");
+            Console.WriteLine("\n------------------------------------\n");
+
             return customer;
         }
 
         public void AddToCart(string input, Customer customer)
         {
+            Console.WriteLine("\n------------------Cart Processing------------------\n");
             Product cartitem;
             int maxquantity;
 
@@ -220,13 +233,15 @@ namespace GeneralStore
                 }
 
             } while (true);
-            Console.WriteLine("\n\nCart has been created succesfully.");
+            Console.WriteLine("\n\nCart has been created succesfully!");
+            Console.WriteLine("\n------------------------------------\n");
         }
 
         public void ConfirmSale(string input, Customer customer)
         {
+            Console.WriteLine("\n------------------Confirming Sale------------------\n");
             float amountdue = 0;
-            Console.WriteLine("\n\nCurrent Cart list:\n");
+            Console.WriteLine($"\n\nCurrent Cart list (Markup: {(int)customer.TypeOfCustomer}%):\n");
             foreach (var item in Cart)
             {
                 amountdue += CalculateSalePrice(customer, item, item.Quantity);
@@ -261,6 +276,7 @@ namespace GeneralStore
             } while (true);
 
             Console.WriteLine("\n\nPayment Complete!!!");
+            Console.WriteLine("\n------------------------------------\n");
         }
 
         public void ProcessSale(Customer customer, Product product, int quantity)
@@ -292,6 +308,12 @@ namespace GeneralStore
             Console.WriteLine($"\nStore does not sell {product.ProductName}.");
             return;
         }
+
+        public void SelectSupplier()
+        {
+
+        }
+
         public void ProcessSupplyOrder(Supplier supplier, Product product, int quantity)
         {
             foreach (var item in supplier.SupplyableProducts)

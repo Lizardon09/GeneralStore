@@ -43,9 +43,11 @@ namespace GeneralStore
             Console.WriteLine($"\n\n------Payment info:------" +
                               $"\n\nHolder: {CustomerP.Name}" +
                               $"\nPayment Method: {CustomerP.PayMethod}" +
-                              $"\nAmount Payed: R{Amount}" +
+                              $"\nCustomer Type: {(CustomerType)CustomerP.TypeOfCustomer}" +
+                              $"\nAmount Payed: R{Amount+Change}" +
+                              $"\nAmount Dued: R{Amount-Change}" +
                               $"\nChange: R{Change}" +
-                              $"\nProducts baught:");
+                              $"\n------Products baught:------\n");
 
             foreach(var item in ProductsPayedFor)
             {

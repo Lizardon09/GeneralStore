@@ -41,9 +41,8 @@ namespace GeneralStore
         {
             Console.WriteLine($"\n\nProduct Name: {ProductName}" +
                               $"\nQuantity: {Quantity}" +
-                              $"\nTaxPercent: {TaxPercent*100}%" +
-                              $"\nBasePrice: R{BasePrice}");
+                              $"\nUnitBasePrice: R{BasePrice}" +
+                              $"\nTaxPercent: {TaxPercent * 100}%");
         }
-
     }
 }
