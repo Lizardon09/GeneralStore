@@ -16,7 +16,7 @@ namespace GeneralStore
 
             //Customer customervarun = new Customer("Varun", CustomerType.Bulk);
 
-            Drink drinkitem = new Drink("Heineken", 10, 0.15F, DrinkType.Alcholic);
+            Drink drinkitem = new Drink("Heineken", 10, DrinkType.Alcholic);
 
             //Food fooditem = new Food("BarOneCake", 8, 0.15F, FoodType.Persishable);
 

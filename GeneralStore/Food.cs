@@ -8,8 +8,8 @@ namespace GeneralStore
 {
     public enum FoodType
     {
-        Persishable,
-        NonPerishable
+        Persishable = 0,
+        NonPerishable = 0
     }
     public class Food : Product
     {
@@ -19,14 +19,16 @@ namespace GeneralStore
 
         }
 
-        public Food(string name, int quantity, float tax, FoodType typeofdrink) : base(name, quantity, tax)
+        public Food(string name, int quantity, float tax, FoodType typeofdrink) : base(name, quantity)
         {
             TypeOfFood = typeofdrink;
+            TaxPercent = (float)TypeOfFood / 100;
         }
 
-        public Food(string name, int quantity, float tax, FoodType typeofdrink, float price) : base(name, quantity, tax, price)
+        public Food(string name, int quantity, float tax, FoodType typeofdrink, float price) : base(name, quantity, price)
         {
             TypeOfFood = typeofdrink;
+            TaxPercent = (float)TypeOfFood / 100;
         }
 
         public override bool CanSell()

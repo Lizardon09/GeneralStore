@@ -14,15 +14,15 @@ namespace GeneralStore
 
        public Supplier()
         {
-            SupplyableProducts = new List<SupplyProduct>() {  new SupplyProduct(new Drink("Heineken",10,0.15F,DrinkType.Alcholic), 200),
-                                                                new SupplyProduct(new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic), 150)
+            SupplyableProducts = new List<SupplyProduct>() {  new SupplyProduct(new Drink("Heineken",10,DrinkType.Alcholic), 200),
+                                                                new SupplyProduct(new Drink("Heineken00",10,DrinkType.NonAlcoholic), 150)
             };
         }
 
         public Supplier(string name, string location)
         {
-            SupplyableProducts = new List<SupplyProduct>() {  new SupplyProduct(new Drink("Heineken",10,0.15F,DrinkType.Alcholic), 200),
-                                                                new SupplyProduct(new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic), 150)
+            SupplyableProducts = new List<SupplyProduct>() {  new SupplyProduct(new Drink("Heineken",10,DrinkType.Alcholic), 200),
+                                                                new SupplyProduct(new Drink("Heineken00",10,DrinkType.NonAlcoholic), 150)
             };
 
             Name = name;

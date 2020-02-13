@@ -8,8 +8,8 @@ namespace GeneralStore
 {
     public enum DrinkType
     {
-        Alcholic,
-        NonAlcoholic
+        Alcholic = 15,
+        NonAlcoholic = 0
     }
    public class Drink: Product
     {
@@ -19,14 +19,16 @@ namespace GeneralStore
 
         }
 
-        public Drink(string name, int quantity, float tax, DrinkType typeofdrink) : base(name, quantity, tax)
+        public Drink(string name, int quantity, DrinkType typeofdrink) : base(name, quantity)
         {
             TypeOfDrink = typeofdrink;
+            TaxPercent = (float)TypeOfDrink / 100;
         }
 
-        public Drink(string name, int quantity, float tax, DrinkType typeofdrink, float price) : base(name, quantity, tax, price)
+        public Drink(string name, int quantity, DrinkType typeofdrink, float price) : base(name, quantity, price)
         {
             TypeOfDrink = typeofdrink;
+            TaxPercent = (float)TypeOfDrink / 100;
         }
 
         public override bool CanSell()

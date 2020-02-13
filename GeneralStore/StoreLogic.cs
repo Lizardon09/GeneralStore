@@ -14,8 +14,8 @@ namespace GeneralStore
 
         public StoreLogic()
         {
-            AvailableProduct = new List<Product>() {  new Drink("Heineken",10,0.15F,DrinkType.Alcholic, 200),
-                 new Drink("Heineken00",10,0F,DrinkType.NonAlcoholic, 100)
+            AvailableProduct = new List<Product>() {  new Drink("Heineken",10,DrinkType.Alcholic, 200),
+                 new Drink("Heineken00",25,DrinkType.NonAlcoholic, 100)
             };
             Payments = new List<Payment>();
             Cart = new List<Product>();

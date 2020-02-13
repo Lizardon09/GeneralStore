@@ -17,18 +17,16 @@ namespace GeneralStore
         {
 
         }
-        public Product(string name, int quantity, float tax)
+        public Product(string name, int quantity)
         {
             ProductName = name;
             Quantity = quantity;
-            TaxPercent = tax;
         }
 
-        public Product(string name, int quantity, float tax, float price)
+        public Product(string name, int quantity, float price)
         {
             ProductName = name;
             Quantity = quantity;
-            TaxPercent = tax;
             BasePrice = price;
         }
 
