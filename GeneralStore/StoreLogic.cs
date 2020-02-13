@@ -161,6 +161,7 @@ namespace GeneralStore
         public void AddToCart(string input, Customer customer)
         {
             Product cartitem;
+            int maxquantity;
 
             Console.WriteLine("\n\nPlease indicate items to be purchased from following (enter -1 to end):\n");
             for (int i = 0; i < AvailableProduct.Count; i++)
@@ -170,6 +171,7 @@ namespace GeneralStore
 
             do
             {
+                Console.WriteLine("\n\nPlease indicate item to be purchased (enter -1 to end):\n");
                 Console.WriteLine();
                 input = Console.ReadLine();
                 if (input == "-1")
@@ -179,22 +181,36 @@ namespace GeneralStore
                 else if(input.All(Char.IsDigit) && Convert.ToInt32(input) < AvailableProduct.Count)
                 {
                     cartitem = (Product) AvailableProduct[Convert.ToInt32(input)].Clone();
+                    maxquantity = AvailableProduct[Convert.ToInt32(input)].Quantity;
+                    
+                    if(Cart.Exists(item => item.ProductName == cartitem.ProductName))
+                    {
+                        maxquantity -= Cart.Find(item => item.ProductName == cartitem.ProductName).Quantity;
+                    }
 
                     Console.WriteLine("\nPlease input quantity:");
                     Console.WriteLine();
                     input = Console.ReadLine();
 
-                    if (input.All(Char.IsDigit) && Convert.ToInt32(input) > 0 && Convert.ToInt32(input) <= cartitem.Quantity)
+                    if (input.All(Char.IsDigit) && Convert.ToInt32(input) > 0 && Convert.ToInt32(input) <= maxquantity)
                     {
-                        cartitem.Quantity = Convert.ToInt32(input);
-                        Cart.Add(cartitem);
-                        Console.WriteLine($"\n{cartitem.Quantity} {cartitem.ProductName} has been added to cart");
-                        Console.WriteLine("\n\nPlease indicate item to be purchased (enter -1 to end):\n");
+                        if(Cart.Exists(item => item.ProductName == cartitem.ProductName))
+                        {
+                            cartitem = Cart.Find(item => item.ProductName == cartitem.ProductName);
+                            cartitem.Quantity += Convert.ToInt32(input);
+                        }
+
+                        else
+                        {
+                            cartitem.Quantity = Convert.ToInt32(input);
+                            Cart.Add(cartitem);
+                        }
+                        Console.WriteLine($"\n{Convert.ToInt32(input)} {cartitem.ProductName} has been added to cart");
                     }
 
                     else
                     {
-                        Console.WriteLine("\n\nInvalid quantity inputed or inputing more than is available, please try again.");
+                        Console.WriteLine("\n\nInvalid quantity inputed or inputing more than is available/left, please try again.");
                     }
 
                 }
@@ -257,10 +273,10 @@ namespace GeneralStore
                     {
                         RemoveFromStock(item, quantity);
                         Console.WriteLine($"\nSold {quantity} {item.ProductName} for R{CalculateSalePrice(customer, item, quantity)} to {customer.Name}:" +
-                                          $"\nBase price: R{item.BasePrice}" +
-                                          $"\nTax amount ({item.TaxPercent*100}%): R{CalculateTaxedAmount(item)}" +
-                                          $"\nConsidering Tax: R{item.BasePrice + (CalculateTaxedAmount(item))}" +
-                                          $"\nMarkup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.BasePrice + (CalculateTaxedAmount(item)))}");
+                                          $"\nUnit Base price: R{item.BasePrice}" +
+                                          $"\nUnit Tax amount ({item.TaxPercent*100}% per unit): R{CalculateTaxedAmount(item)}" +
+                                          $"\nUnit Considering Tax: R{item.BasePrice + (CalculateTaxedAmount(item))}" +
+                                          $"\nUnit Markup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.BasePrice + (CalculateTaxedAmount(item)))}");
                         return;
                     }
 
@@ -287,7 +303,7 @@ namespace GeneralStore
                     Console.WriteLine($"\nSuccessful supply order:" +
                                       $"\nSupplier: {supplier.Name}" +
                                       $"\nItem: {product.ProductName}" +
-                                      $"\nUnit Price: R{item.CostPrice}" +
+                                      $"\nUnit Cost Price: R{item.CostPrice}" +
                                       $"\nQuantity: {quantity}" +
                                       $"\nTotal Cost Price: R{item.CostPrice * quantity}\n");
                     return;
