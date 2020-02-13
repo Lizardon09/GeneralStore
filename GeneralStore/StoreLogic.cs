@@ -15,7 +15,7 @@ namespace GeneralStore
         public StoreLogic()
         {
             AvailableProduct = new List<Product>() {  new Drink("Heineken",10,0.15F,DrinkType.Alcholic, 200),
-                 new Drink("Heineken00",10,0.15F,DrinkType.NonAlcoholic, 100)
+                 new Drink("Heineken00",10,0F,DrinkType.NonAlcoholic, 100)
             };
             Payments = new List<Payment>();
             Cart = new List<Product>();
@@ -89,7 +89,7 @@ namespace GeneralStore
                 }
             } while (input == "false");
 
-            Console.WriteLine("\n------------------Stor is closed------------------");
+            Console.WriteLine("\n------------------Store is closed------------------");
             Console.WriteLine("\n------------------COME AGAIN!!!!------------------");
 
         }
@@ -258,9 +258,9 @@ namespace GeneralStore
                         RemoveFromStock(item, quantity);
                         Console.WriteLine($"\nSold {quantity} {item.ProductName} for R{CalculateSalePrice(customer, item, quantity)} to {customer.Name}:" +
                                           $"\nBase price: R{item.BasePrice}" +
-                                          $"\nTax amount ({item.TaxPercent*100}%): R{item.BasePrice*item.TaxPercent}" +
-                                          $"\nConsidering Tax: R{item.BasePrice + (item.BasePrice * item.TaxPercent)}" +
-                                          $"\nMarkup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.BasePrice + (item.BasePrice * item.TaxPercent))}");
+                                          $"\nTax amount ({item.TaxPercent*100}%): R{CalculateTaxedAmount(item)}" +
+                                          $"\nConsidering Tax: R{item.BasePrice + (CalculateTaxedAmount(item))}" +
+                                          $"\nMarkup ({(int)customer.TypeOfCustomer}%): R{CalculateSalePrice(customer, item, 1) - (item.BasePrice + (CalculateTaxedAmount(item)))}");
                         return;
                     }
 
@@ -341,9 +341,14 @@ namespace GeneralStore
 
         private float CalculateSalePrice(Customer customer, Product product, int quantity)
         {
-            float finalprice = product.BasePrice + (product.BasePrice * product.TaxPercent);
+            float finalprice = product.BasePrice + CalculateTaxedAmount(product);
             finalprice += (finalprice * ((float)customer.TypeOfCustomer / 100));
             return finalprice * quantity;
+        }
+
+        private float CalculateTaxedAmount(Product product)
+        {
+            return (product.TaxPercent > 0 ? product.BasePrice * product.TaxPercent : product.BasePrice);
         }
 
         public void ViewPayments()

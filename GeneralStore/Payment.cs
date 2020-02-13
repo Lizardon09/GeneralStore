@@ -18,12 +18,12 @@ namespace GeneralStore
         public PayMentOption PayMethod { get; set; }
         public float Amount { get; set; }
         public float Change { get; set; }
-        public List<Product> ProductsPayingFor { get; set; }
+        public List<Product> ProductsPayedFor { get; set; }
 
         public Payment(List<Product> products,PayMentOption payMentOption,float amount, Customer customer, float change)
         {
             CustomerP = customer;
-            ProductsPayingFor = products;
+            ProductsPayedFor = products;
             PayMethod = payMentOption;
             Amount = amount;
             Change = change;
@@ -31,8 +31,8 @@ namespace GeneralStore
         public Payment(Product product, PayMentOption payMentOption, float amount, Customer customer, float change)
         {
             CustomerP = customer;
-            ProductsPayingFor = new List<Product>();
-            ProductsPayingFor.Add(product);
+            ProductsPayedFor = new List<Product>();
+            ProductsPayedFor.Add(product);
             PayMethod = payMentOption;
             Amount = amount;
             Change = change;
@@ -40,11 +40,19 @@ namespace GeneralStore
 
         public void DisplayPaymentInfo()
         {
-            Console.WriteLine($"\n\nPayment info:" +
+            Console.WriteLine($"\n\n------Payment info:------" +
                               $"\n\nHolder: {CustomerP.Name}" +
                               $"\nPayment Method: {CustomerP.PayMethod}" +
                               $"\nAmount Payed: R{Amount}" +
-                              $"\nChange: R{Change}");
+                              $"\nChange: R{Change}" +
+                              $"\nProducts baught:");
+
+            foreach(var item in ProductsPayedFor)
+            {
+                item.DisplayProduct();
+                Console.WriteLine();
+            }
+
         }
     }
 }
